@@ -1,23 +1,5 @@
 # Fancy Block Particles (26.2 Port)
-[![image](https://i.imgur.com/1sFio8F.png)](https://github.com/Romoslayer/FancyBlockParticles "3D particles for Minecraft 26.2!")\
 This is **Romoslayer's** port of the mod to **Minecraft 26.2**, built on top of Hantonik and TominoCZ's *FBP Renewed*, which itself is a revamp of MorphoxL's original *Fancy Block Particles* mod. See [Credits](#credits) below for the full lineage.
-
-### Keybindings
-| Name                              |      Key      |
-|-----------------------------------|:-------------:|
-| Enable/disable mod                |  **Unbound**  |
-| Enable/disable placing animations |  **Unbound**  |
-| Open settings                     |     **I**     |
-| Toggle freeze effect              |  **Unbound**  |
-| Kill particles                    |  **Unbound**  |
-| Fast add block to blacklist       |     **X**     |
-| Fast add held block to blacklist  | **Shift + X** |
-| Reload config                     |  **Unbound**  |
-
-### OptiFine/Iris compatibility
-FBP **should be** compatible with OptiFine and Iris.
-\
-If you notice any bugs that occur exclusively when using FBP with OptiFine, Iris or another shader mod, please report them [here](https://github.com/Romoslayer/FancyBlockParticles/issues/new "Enter all the necessary information!"). **However**, keep in mind that not all such issues can be resolved!
 
 ## Downloads
 
