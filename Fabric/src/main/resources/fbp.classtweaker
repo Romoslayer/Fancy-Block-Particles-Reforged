@@ -28,8 +28,6 @@ mutable field net/minecraft/client/particle/TerrainParticle pos Lnet/minecraft/c
 accessible field net/minecraft/client/particle/TrailParticle target Lnet/minecraft/world/phys/Vec3;
 mutable field net/minecraft/client/particle/TrailParticle target Lnet/minecraft/world/phys/Vec3;
 
-accessible field net/minecraft/client/renderer/LevelRenderer destroyingBlocks Lit/unimi/dsi/fastutil/ints/Int2ObjectMap;
-
 accessible field net/minecraft/client/gui/components/StringWidget maxWidth I
 accessible field net/minecraft/client/gui/components/StringWidget textOverflow Lnet/minecraft/client/gui/components/StringWidget$TextOverflow;
 

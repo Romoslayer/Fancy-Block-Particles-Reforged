@@ -4,7 +4,7 @@ import net.darkhax.curseforgegradle.Constants as CFConstants
 import net.darkhax.curseforgegradle.TaskPublishCurseForge
 
 plugins {
-	id 'net.fabricmc.fabric-loom' version '1.16.+'
+	id 'net.fabricmc.fabric-loom' version '1.17.+'
 }
 
 base {
@@ -54,7 +54,7 @@ dependencies {
 	compileOnly "com.github.glitchfiend:GlitchCore-fabric:$mc_version-$glitchcore_version"
 
 	compileOnly "net.caffeinemc:sodium-fabric:$sodium_version+mc$mc_version"
-	compileOnly "maven.modrinth:iris:$iris_version+26.1-fabric" // Update to 26.1.2
+	compileOnly "maven.modrinth:iris:$iris_version+26.2-fabric"
 
 	// Iris libs
     localRuntime 'org.antlr:antlr4-runtime:4.13.1'

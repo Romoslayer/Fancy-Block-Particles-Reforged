@@ -119,7 +119,7 @@ public abstract class MixinParticleEngine {
                     if (options == ParticleTypes.DRIPPING_WATER || options == ParticleTypes.DRIPPING_DRIPSTONE_WATER) {
                         alpha = FancyBlockParticles.CONFIG.rain.getTransparency(); // Small exception:)
 
-                        int color = this.level.environmentAttributes().getValue(EnvironmentAttributes.SKY_COLOR, Minecraft.getInstance().gameRenderer.getMainCamera().position());
+                        int color = this.level.environmentAttributes().getValue(EnvironmentAttributes.SKY_COLOR, Minecraft.getInstance().gameRenderer.mainCamera().position());
 
                         rCol = ARGB.redFloat(color);
                         gCol = Mth.clamp(ARGB.greenFloat(color) + 0.1F, 0.1F, 1.0F);

@@ -51,19 +51,19 @@ public final class FancyBlockParticles {
         }
 
         if (FBPKeyMappings.OPEN_SETTINGS.consumeClick())
-            client.setScreen(new FBPOptionsScreen(null));
+            client.gui.setScreen(new FBPOptionsScreen(null));
 
         if (FBPKeyMappings.ADD_TO_BLACKLIST.isDown()) {
             if (InputConstants.isKeyDown(Minecraft.getInstance().getWindow(), 340) || InputConstants.isKeyDown(Minecraft.getInstance().getWindow(), 344)) {
                 var heldItem = client.player.getMainHandItem();
 
                 if (heldItem.getItem() instanceof BlockItem)
-                    client.setScreen(new FBPFastBlacklistScreen(heldItem));
+                    client.gui.setScreen(new FBPFastBlacklistScreen(heldItem));
             } else {
                 var hit = client.hitResult;
 
                 if (hit != null && hit.getType() == HitResult.Type.BLOCK)
-                    client.setScreen(new FBPFastBlacklistScreen(((BlockHitResult) hit).getBlockPos()));
+                    client.gui.setScreen(new FBPFastBlacklistScreen(((BlockHitResult) hit).getBlockPos()));
             }
 
             FancyBlockParticles.CONFIG.save();
@@ -84,7 +84,7 @@ public final class FancyBlockParticles {
     }
 
     public static void onRenderHud(GuiGraphicsExtractor graphics) {
-        if (FancyBlockParticles.CONFIG.global.isEnabled() && FancyBlockParticles.CONFIG.overlay.isFreezeEffectOverlay() && FancyBlockParticles.CONFIG.global.isFreezeEffect() && !Minecraft.getInstance().options.hideGui)
+        if (FancyBlockParticles.CONFIG.global.isEnabled() && FancyBlockParticles.CONFIG.overlay.isFreezeEffectOverlay() && FancyBlockParticles.CONFIG.global.isFreezeEffect() && !Minecraft.getInstance().gui.hud.isHidden())
             graphics.centeredText(Minecraft.getInstance().font, Component.translatable("gui.fbp.freeze_effect").withStyle(ChatFormatting.BOLD), graphics.guiWidth() / 2, 5, FancyBlockParticles.CONFIG.overlay.getFreezeEffectColor() | 0xFF << 24);
     }
 
@@ -98,7 +98,7 @@ public final class FancyBlockParticles {
             if (!FancyBlockParticles.CONFIG.global.isDisableOculusWarning()) {
                 if (screen instanceof TitleScreen) {
                     if (Services.PLATFORM.isModLoaded("oculus")) {
-                        Minecraft.getInstance().setScreen(new FBPOculusWarningScreen(screen));
+                        Minecraft.getInstance().gui.setScreen(new FBPOculusWarningScreen(screen));
 
                         OCULUS_WARNING_SCREEN_SHOWN = true;
                     }

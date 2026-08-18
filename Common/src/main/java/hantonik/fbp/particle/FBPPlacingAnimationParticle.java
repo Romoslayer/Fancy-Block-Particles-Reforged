@@ -13,10 +13,10 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleRenderType;
-import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.block.MovingBlockRenderState;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.util.LightCoordsUtil;
 import net.minecraft.util.Mth;
 import net.minecraft.util.Util;
 import net.minecraft.world.InteractionHand;
@@ -144,7 +144,7 @@ public class FBPPlacingAnimationParticle extends Particle implements IFBPAnimati
 
     @Override
     public int getLightCoords(float partialTick) {
-        return this.level.hasChunkAt(this.pos) ? LevelRenderer.getLightCoords(LevelRenderer.BrightnessGetter.DEFAULT, this.level, this.state, this.pos) : 0;
+        return this.level.hasChunkAt(this.pos) ? LightCoordsUtil.getLightCoords(LightCoordsUtil.BrightnessGetter.DEFAULT, this.level, this.state, this.pos) : 0;
     }
 
     @Override

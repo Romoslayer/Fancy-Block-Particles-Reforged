@@ -122,19 +122,9 @@ public abstract class MixinClientLevel extends Level {
             }
 
             if ((!(state.getBlock() instanceof LiquidBlock) && !(FancyBlockParticles.CONFIG.global.isFreezeEffect() && !FancyBlockParticles.CONFIG.terrain.isSpawnWhileFrozen()))) {
-                var destroyingBlocks = Minecraft.getInstance().levelRenderer.destroyingBlocks;
+                var progresses = ((ClientLevel) (Object) this).destructionProgress().get(pos.asLong());
 
-                var damage = 0;
-
-                if (!destroyingBlocks.isEmpty()) {
-                    for (var progress : destroyingBlocks.values()) {
-                        if (progress.getPos() == pos) {
-                            damage = progress.getProgress();
-
-                            break;
-                        }
-                    }
-                }
+                var damage = progresses == null || progresses.isEmpty() ? 0 : progresses.last().getProgress();
 
                 var particle = new FBPTerrainParticle((ClientLevel) (Object) this, x, y, z, 0.0D, 0.0D, 0.0D, 2.0F, 1.0F, 1.0F, 1.0F, pos, state, side, null);
 

@@ -18,6 +18,7 @@ import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.DoublePlantBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.ChestType;
+import net.minecraft.world.phys.Vec3;
 
 import java.util.Map;
 import java.util.Set;
@@ -30,7 +31,7 @@ public final class FBPPlacingAnimationManager {
     public static void addAnimation(ClientLevel level, BlockState state, BlockPos pos, LivingEntity placer, InteractionHand hand) {
         if (FancyBlockParticles.CONFIG.animations.isEnabled() && FancyBlockParticles.CONFIG.isBlockAnimationsEnabled(state.getBlock())) {
             if (!state.is(BlockTags.BEDS) && !(state.getBlock() instanceof DoublePlantBlock) && !(state.getBlock() instanceof DoorBlock) && (!state.hasProperty(ChestBlock.TYPE) || state.getValue(ChestBlock.TYPE) != ChestType.SINGLE)) {
-                if (Minecraft.getInstance().getCameraEntity().position().distanceTo(pos.getCenter()) <= Minecraft.getInstance().options.renderDistance().get() * 16) {
+                if (Minecraft.getInstance().getCameraEntity().position().distanceTo(Vec3.atCenterOf(pos)) <= Minecraft.getInstance().options.renderDistance().get() * 16) {
                     var animation = new FBPPlacingAnimationParticle(level, state, pos, placer, hand);
 
                     var oldAnimation = ACTIVE_ANIMATIONS.get(pos);

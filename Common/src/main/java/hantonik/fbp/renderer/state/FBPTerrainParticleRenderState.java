@@ -1,26 +1,27 @@
 package hantonik.fbp.renderer.state;
 
 import com.google.common.collect.Maps;
-import com.mojang.blaze3d.systems.RenderPass;
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.*;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import hantonik.fbp.mixin.MixinRenderType;
 import net.minecraft.client.particle.SingleQuadParticle;
 import net.minecraft.client.renderer.SubmitNodeCollector;
-import net.minecraft.client.renderer.feature.ParticleFeatureRenderer;
+import net.minecraft.client.renderer.rendertype.RenderSetup;
+import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.state.level.ParticleGroupRenderState;
-import net.minecraft.client.renderer.state.level.QuadParticleRenderState;
-import net.minecraft.client.renderer.texture.TextureManager;
-import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
-import org.joml.Vector4f;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-public class FBPTerrainParticleRenderState implements SubmitNodeCollector.ParticleGroupRenderer, ParticleGroupRenderState {
+public class FBPTerrainParticleRenderState implements ParticleGroupRenderState {
+    // Vanilla no longer exposes a public RenderType for the particle vertex format/pipelines (that's private to
+    // QuadParticleFeatureRenderer), so we build our own via the same RenderPipelines particles normally use.
+    private static final Map<SingleQuadParticle.Layer, RenderType> RENDER_TYPES = Maps.newHashMap();
+
     private final Map<SingleQuadParticle.Layer, Storage> particles = Maps.newHashMap();
 
     private int particleCount;
@@ -39,55 +40,29 @@ public class FBPTerrainParticleRenderState implements SubmitNodeCollector.Partic
     }
 
     @Override
-    public QuadParticleRenderState.PreparedBuffers prepare(ParticleFeatureRenderer.ParticleBufferCache cache, boolean translucent) {
-        var verticesCount = this.particleCount * 4;
+    public void submit(SubmitNodeCollector nodeCollector, CameraRenderState state) {
+        if (this.particleCount == 0)
+            return;
 
-        try (ByteBufferBuilder builder = ByteBufferBuilder.exactlySized(verticesCount * DefaultVertexFormat.PARTICLE.getVertexSize())) {
-            var buffer = new BufferBuilder(builder, VertexFormat.Mode.QUADS, DefaultVertexFormat.PARTICLE);
-            var prepared = new HashMap<SingleQuadParticle.Layer, QuadParticleRenderState.PreparedLayer>();
+        var poseStack = new PoseStack();
 
-            var vertexOffset = 0;
+        for (var entry : this.particles.entrySet()) {
+            if (entry.getValue().count() == 0)
+                continue;
 
-            for (var entry : this.particles.entrySet()) {
-                if (entry.getKey().translucent() == translucent) {
-                    entry.getValue().forEachParticle((posX, posY, posZ, rotX, rotY, rotZ, rotW, widthScale, heightScale, u0, u1, v0, v1, color, light) -> this.renderRotatedQuad(buffer, posX, posY, posZ, rotX, rotY, rotZ, rotW, widthScale, heightScale, u0, u1, v0, v1, color, light));
+            var renderType = getRenderType(entry.getKey());
+            var storage = entry.getValue();
 
-                    if (entry.getValue().count() > 0)
-                        prepared.put(entry.getKey(), new QuadParticleRenderState.PreparedLayer(vertexOffset, entry.getValue().count() * 6));
-
-                    vertexOffset += entry.getValue().count() * 4;
-                }
-            }
-
-            var data = buffer.build();
-
-            if (data != null) {
-                cache.write(data.vertexBuffer());
-                RenderSystem.getSequentialBuffer(VertexFormat.Mode.QUADS).getBuffer(data.drawState().indexCount());
-
-                return new QuadParticleRenderState.PreparedBuffers(data.drawState().indexCount(), RenderSystem.getDynamicUniforms().writeTransform(RenderSystem.getModelViewMatrix(), new Vector4f(1.0F, 1.0F, 1.0F, 1.0F), new Vector3f(), new Matrix4f()), prepared);
-            }
+            nodeCollector.submitCustomGeometry(poseStack, renderType, (pose, consumer) -> storage.forEachParticle((posX, posY, posZ, rotX, rotY, rotZ, rotW, widthScale, heightScale, u0, u1, v0, v1, color, light) -> this.renderRotatedQuad(consumer, posX, posY, posZ, rotX, rotY, rotZ, rotW, widthScale, heightScale, u0, u1, v0, v1, color, light)));
         }
-
-        return null;
     }
 
-    @Override
-    public void render(QuadParticleRenderState.PreparedBuffers buffers, ParticleFeatureRenderer.ParticleBufferCache cache, RenderPass pass, TextureManager manager) {
-        var sequentialBuffer = RenderSystem.getSequentialBuffer(VertexFormat.Mode.QUADS);
+    private static RenderType getRenderType(SingleQuadParticle.Layer layer) {
+        return RENDER_TYPES.computeIfAbsent(layer, key -> {
+            var setup = RenderSetup.builder(key.pipeline()).withTexture("Sampler0", key.textureAtlasLocation()).useLightmap().createRenderSetup();
 
-        pass.setVertexBuffer(0, cache.get());
-        pass.setIndexBuffer(sequentialBuffer.getBuffer(buffers.indexCount()), sequentialBuffer.type());
-        pass.setUniform("DynamicTransforms", buffers.dynamicTransforms());
-
-        for (var entry : buffers.layers().entrySet()) {
-            pass.setPipeline(entry.getKey().pipeline());
-
-            var texture = manager.getTexture(entry.getKey().textureAtlasLocation());
-            pass.bindTexture("Sampler0", texture.getTextureView(), texture.getSampler());
-
-            pass.drawIndexed(entry.getValue().vertexOffset(), 0, entry.getValue().indexCount(), 1);
-        }
+            return MixinRenderType.fbp$create("fbp_terrain_particle_" + (key.translucent() ? "translucent" : "opaque") + "_" + key.textureAtlasLocation().getPath(), setup);
+        });
     }
 
     private void renderRotatedQuad(VertexConsumer consumer, float posX, float posY, float posZ, float rotX, float rotY, float rotZ, float rotW, float widthScale, float heightScale, float u0, float u1, float v0, float v1, int color, int light) {
@@ -103,17 +78,6 @@ public class FBPTerrainParticleRenderState implements SubmitNodeCollector.Partic
         var vertexPos = new Vector3f(x, y, 0.0F).rotate(rotation).mul(widthScale, heightScale, widthScale).add(posX, posY, posZ);
 
         consumer.addVertex(vertexPos.x(), vertexPos.y(), vertexPos.z()).setUv(u, v).setColor(color).setLight(light);
-    }
-
-    @Override
-    public void submit(SubmitNodeCollector nodeCollector, CameraRenderState state) {
-        if (this.particleCount > 0)
-            nodeCollector.submitParticleGroup(this);
-    }
-
-    @Override
-    public boolean isEmpty() {
-        return false;
     }
 
     @FunctionalInterface

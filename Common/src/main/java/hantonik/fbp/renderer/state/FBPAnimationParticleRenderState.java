@@ -26,7 +26,7 @@ public class FBPAnimationParticleRenderState implements ParticleGroupRenderState
     @Override
     public void submit(SubmitNodeCollector nodeCollector, CameraRenderState state) {
         for (var animation : this.animations)
-            nodeCollector.submitMovingBlock(animation.stack, animation.renderState);
+            nodeCollector.submitMovingBlock(animation.stack, animation.renderState, 0);
     }
 
     private record FBPAnimationRenderState(PoseStack stack, MovingBlockRenderState renderState) {}

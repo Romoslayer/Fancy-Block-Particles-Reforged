@@ -261,7 +261,7 @@ public class FBPDripParticle extends DripParticle implements IFBPParticleRendere
         var zo = z;
 
         if ((x != 0.0D || y != 0.0D || z != 0.0D) && x * x + y * y + z * z < Mth.square(100.0D)) {
-            var vec = Entity.collideBoundingBox(null, new Vec3(x, y, z), this.getBoundingBox(), this.level, List.of());
+            var vec = Entity.collideBoundingBox((Entity) null, new Vec3(x, y, z), this.getBoundingBox(), this.level, List.of());
 
             x = vec.x;
             y = vec.y;

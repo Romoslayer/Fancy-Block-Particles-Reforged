@@ -63,18 +63,18 @@ public abstract class FBPAbstractOptionsScreen extends Screen {
             this.config.setConfig(FancyBlockParticles.CONFIG.copy());
             this.activeConfig.setConfig(FancyBlockParticles.CONFIG.copy());
 
-            this.minecraft.setScreen(new AlertScreen(() -> this.minecraft.setScreen(this), Component.translatable("button.fbp.common.reload"), Component.translatable("screen.fbp.reload_alert")));
+            this.minecraft.gui.setScreen(new AlertScreen(() -> this.minecraft.gui.setScreen(this), Component.translatable("button.fbp.common.reload"), Component.translatable("screen.fbp.reload_alert")));
 
             this.rebuildWidgets();
         }).width(310).build(), 2);
-        footerHelper.addChild(Button.builder(Component.translatable("button.fbp.common.reset"), _ -> this.minecraft.setScreen(new ConfirmScreen(confirm -> {
+        footerHelper.addChild(Button.builder(Component.translatable("button.fbp.common.reset"), _ -> this.minecraft.gui.setScreen(new ConfirmScreen(confirm -> {
             if (confirm) {
                 this.resetConfig();
 
                 this.rebuildWidgets();
             }
 
-            this.minecraft.setScreen(this);
+            this.minecraft.gui.setScreen(this);
         }, Component.translatable("button.fbp.common.reset"), Component.translatable("screen.fbp.reset_confirm")))).width(150).build());
         footerHelper.addChild(Button.builder(Component.translatable("button.fbp.common.done"), _ -> this.onDone()).width(150).build());
 
@@ -113,7 +113,7 @@ public abstract class FBPAbstractOptionsScreen extends Screen {
         }
 
         if (FBPKeyMappings.OPEN_SETTINGS.matches(event)) {
-            this.minecraft.setScreen(null);
+            this.minecraft.gui.setScreen(null);
 
             return true;
         }
@@ -130,7 +130,7 @@ public abstract class FBPAbstractOptionsScreen extends Screen {
             screen.list.setScrollAmount(scrollAmount);
         }
 
-        this.minecraft.setScreen(this.lastScreen);
+        this.minecraft.gui.setScreen(this.lastScreen);
     }
 
     protected void onDone() {
@@ -147,6 +147,6 @@ public abstract class FBPAbstractOptionsScreen extends Screen {
     }
 
     protected Button openScreenButton(Component title, Supplier<Screen> screen, int width, int height) {
-        return Button.builder(title, _ -> this.minecraft.setScreen(screen.get())).size(width, height).build();
+        return Button.builder(title, _ -> this.minecraft.gui.setScreen(screen.get())).size(width, height).build();
     }
 }
