@@ -53,14 +53,11 @@ Looking for the officially published, actively-maintained mod on older/newer ver
 ## Contribution
 
 **Found a bug in this 26.2 port?** Report it [here](https://github.com/Romoslayer/FancyBlockParticles/issues/new "Enter all the necessary information!"), and I'll try to fix it!\
-**Have an idea for a new feature?** Open an issue and let me know!
+This is just a port to 26.2 — no new features are planned, so feature requests should go to the upstream project instead.
 
 ## Code
 
-[Click me](https://github.com/Romoslayer/FancyBlockParticles "All the magic is here!") for **source code**!
-
-<em><span style="font-family: 'comic sans ms', sans-serif; color: #999999">"If you want to use my code, feel free, but remember to mention whose code it is!</span></em>
-<em><p style="padding-left: 5px;"><span style="font-family: 'comic sans ms', sans-serif; color: #999999">Take care."</span></p></em>
+This project is **open source** — feel free to use the code, but please credit the original authors (see [Credits](#credits) below).
 
 ## Credits
 
