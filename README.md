@@ -1,5 +1,5 @@
-# Fancy Block Particles (26.2 Port)
-This is **Romoslayer's** port of the mod to **Minecraft 26.2**, built on top of Hantonik and TominoCZ's *FBP Renewed*, which itself is a revamp of MorphoxL's original *Fancy Block Particles* mod. See [Credits](#credits) below for the full lineage.
+# FBP Reforged
+This is **Romoslayer's** port of *Fancy Block Particles* to **Minecraft 26.2**, built on top of Hantonik and TominoCZ's *FBP Renewed*, which itself is a revamp of MorphoxL's original *Fancy Block Particles* mod. See [Credits](#credits) below for the full lineage.
 
 ## Downloads
 
