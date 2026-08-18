@@ -1,30 +1,6 @@
 # Fancy Block Particles (26.2 Port)
 [![image](https://i.imgur.com/1sFio8F.png)](https://github.com/Romoslayer/FancyBlockParticles "3D particles for Minecraft 26.2!")\
-<span style=" color: #8131f9;"><strong>Fancy Block Particles</strong></span> is a client-side mod that turns basic 2D particles in vanilla Minecraft into cool <strong>3D animated particles</strong>!\
 This is **Romoslayer's** port of the mod to **Minecraft 26.2**, built on top of Hantonik and TominoCZ's *FBP Renewed*, which itself is a revamp of MorphoxL's original *Fancy Block Particles* mod. See [Credits](#credits) below for the full lineage.
-
-## Description
-This mod introduces 3D particles into the game, offering the flexibility to customize their options according to your individual preferences. If you find any of the particles undesirable, you can decrease their quantity or disable them entirely. Once disabled (via the FBP panel), standard vanilla particles will appear.
-
-**This mod should be installed on the client side only!**
-
-Yes, you can use this mod in your modpack!
-
-### Particles
- - Block breaking and cracking particles
- - Falling dust particles
- - Flame, lava, smoke and campfire smoke particles
- - Firefly particles
- - Drip particles
- - Rain and snow particles
-
-### Animations
- - Block placing animation
-
-### Settings
-FBP gives you the ability to customize the most essential breaking particle settings according to your preferences. To access the FBP panel, press **I** key (default) on your keyboard.
-![image](https://i.imgur.com/RPdhY21.png)
-You also have the option to adjust settings through the config file located at `config/fbp/config.json` if you need.
 
 ### Keybindings
 | Name                              |      Key      |
