@@ -70,7 +70,7 @@ public final class FBPNeoForge {
 
     private void postClientPauseChange(final ClientPauseChangeEvent.Post event) {
         if (event.isPaused())
-            FancyBlockParticles.onClientPause(Minecraft.getInstance().screen);
+            FancyBlockParticles.onClientPause(Minecraft.getInstance().gui.screen());
     }
 
     private void postScreenInit(final ScreenEvent.Init.Post event) {

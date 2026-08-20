@@ -72,9 +72,9 @@ dependencies {
     compileOnly "net.caffeinemc:sodium-neoforge-mod:$sodium_version+mc$mc_version"
     runtimeOnly "net.caffeinemc:sodium-neoforge:$sodium_version+mc$mc_version"
 
-    compileOnly "maven.modrinth:iris:$iris_version+26.1-neoforge" // Update to 26.1.2
+    compileOnly "maven.modrinth:iris:$iris_version+26.2-neoforge"
 
-    compileOnly "org.embeddedt:embeddium-1.21.4:$embeddium_version+mc1.21.4" // Update 26.1.2
+    compileOnly "org.embeddedt:embeddium-1.21.4:$embeddium_version+mc1.21.4" // TODO: verify against 26.2
 //    compileOnly "maven.modrinth:oculus:$oculus_version"
 
     runtimeOnly "maven.modrinth:spark:$spark_version-neoforge"
@@ -119,7 +119,7 @@ tasks.register('publishCurseForge', TaskPublishCurseForge) {
 modrinth {
     token = System.getenv('MODRINTH_TOKEN')
 
-    projectId = 'fbp-renewed'
+    projectId = 'fbp-reforged'
 
     versionName = "${base.archivesName.get()}-$version"
     versionNumber = "$version+neoforge"
