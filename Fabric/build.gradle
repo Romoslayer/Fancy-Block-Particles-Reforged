@@ -85,7 +85,7 @@ tasks.register('publishCurseForge', TaskPublishCurseForge) {
 
 	apiToken = System.getenv('CURSEFORGE_TOKEN')
 
-	var modFile = upload('937011', tasks.jar.archiveFile)
+	var modFile = upload('1657663', tasks.jar.archiveFile)
 	modFile.displayName = "${base.archivesName.get()}-$version"
 	modFile.releaseType = "$mod_version_label"
 	modFile.addGameVersion(mc_version, 'client')
