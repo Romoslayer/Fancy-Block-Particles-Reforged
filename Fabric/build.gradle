@@ -8,7 +8,7 @@ plugins {
 }
 
 base {
-	archivesName = "$mod_name-$mc_version-fabric"
+	archivesName = "$mod_name-fabric"
 }
 
 println "Fabric API: $fabric_version, Loader: $loader_version"

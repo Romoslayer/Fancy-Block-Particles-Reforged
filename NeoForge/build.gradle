@@ -7,7 +7,7 @@ plugins {
 }
 
 base {
-    archivesName = "$mod_name-$mc_version-neoforge"
+    archivesName = "$mod_name-neoforge"
 }
 
 println "NeoForge: $neo_version"
