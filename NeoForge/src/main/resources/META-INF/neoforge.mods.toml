@@ -1,16 +1,16 @@
 license="GPLv3"
-issueTrackerURL="https://github.com/Hantonik/FancyBlockParticles/issues"
+issueTrackerURL="https://github.com/Romoslayer/Fancy-Block-Particles-Reforged/issues"
 
 [[mods]]
     modId="fbp"
     version="${mod_version}"
     displayName="${mod_name}"
-    displayURL="https://www.curseforge.com/minecraft/mc-mods/fbp-renewed"
+    displayURL="https://www.curseforge.com/minecraft/mc-mods/fancy-block-particles-reforged"
     displayTest="IGNORE_ALL_VERSION"
     logoFile="logo.png"
-    updateJSONURL="https://raw.githubusercontent.com/Hantonik/FancyBlockParticles/${mc_version}/update.json"
-    authors="Hantonik, TominoCZ"
-    credits="Original mod by TominoCZ"
+    updateJSONURL="https://raw.githubusercontent.com/Romoslayer/Fancy-Block-Particles-Reforged/${mc_version}/update.json"
+    authors="Hantonik, TominoCZ, Romoslayer"
+    credits="Original mod by MorphoxL, continued as FBP Renewed by Hantonik and TominoCZ"
     description='''3D Digging particles! YAY!'''
 
 [[mixins]]
@@ -21,13 +21,13 @@ issueTrackerURL="https://github.com/Hantonik/FancyBlockParticles/issues"
 [[dependencies.fbp]]
     modId="neoforge"
     type="required"
-    versionRange="[26.1.1,)"
+    versionRange="[26.2.0.0,)"
     ordering="NONE"
     side="CLIENT"
 
 [[dependencies.fbp]]
     modId="minecraft"
     type="required"
-    versionRange="[26.1.1,26.2)"
+    versionRange="[26.2,26.3)"
     ordering="NONE"
     side="CLIENT"

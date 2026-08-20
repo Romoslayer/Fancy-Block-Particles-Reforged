@@ -1,11 +1,16 @@
 {
-  "homepage": "https://www.curseforge.com/minecraft/mc-mods/fbp-renewed",
+  "homepage": "https://www.curseforge.com/minecraft/mc-mods/fancy-block-particles-reforged",
 
   "promos": {
-    "26.1.2-latest": "26.1.2.0.0-beta"
+    "26.1.2-latest": "26.1.2.0.0-beta",
+    "26.2-latest": "26.2-1.0.0"
   },
 
   "26.1.2": {
     "26.1.2.0.0-beta": "Update to Minecraft 26.1.2. Set default freeze particles key to unbound. Add sampler validation workaround"
+  },
+
+  "26.2": {
+    "26.2-1.0.0": "Port to Minecraft 26.2."
   }
 }
