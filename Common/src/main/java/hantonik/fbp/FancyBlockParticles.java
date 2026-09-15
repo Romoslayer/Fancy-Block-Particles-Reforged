@@ -54,7 +54,7 @@ public final class FancyBlockParticles {
             client.gui.setScreen(new FBPOptionsScreen(null));
 
         if (FBPKeyMappings.ADD_TO_BLACKLIST.isDown()) {
-            if (InputConstants.isKeyDown(Minecraft.getInstance().getWindow(), 340) || InputConstants.isKeyDown(Minecraft.getInstance().getWindow(), 344)) {
+            if (InputConstants.isKeyDown(InputConstants.KEY_LSHIFT) || InputConstants.isKeyDown(InputConstants.KEY_RSHIFT)) {
                 var heldItem = client.player.getMainHandItem();
 
                 if (heldItem.getItem() instanceof BlockItem)

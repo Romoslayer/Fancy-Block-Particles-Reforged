@@ -18,7 +18,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.attribute.EnvironmentAttributes;
@@ -64,11 +63,11 @@ public class FBPRainParticle extends WaterDropParticle implements IFBPParticleRe
         this.quadSize = 0.0F;
         this.gravity = 0.025F * FancyBlockParticles.CONFIG.rain.getGravityMultiplier();
 
-        int color = this.level.environmentAttributes().getValue(EnvironmentAttributes.SKY_COLOR, Minecraft.getInstance().gameRenderer.mainCamera().position());
+        var color = this.level.environmentAttributes().getValue(EnvironmentAttributes.SKY_COLOR, Minecraft.getInstance().gameRenderer.mainCamera().position());
 
-        this.rCol = ARGB.redFloat(color);
-        this.gCol = Mth.clamp(ARGB.greenFloat(color) + 0.1F, 0.1F, 1.0F);
-        this.bCol = Mth.clamp(ARGB.blueFloat(color) + 0.5F, 0.5F, 1.0F);
+        this.rCol = color.x();
+        this.gCol = Mth.clamp(color.y() + 0.1F, 0.1F, 1.0F);
+        this.bCol = Mth.clamp(color.z() + 0.5F, 0.5F, 1.0F);
 
         this.alpha = FancyBlockParticles.CONFIG.rain.getTransparency();
 

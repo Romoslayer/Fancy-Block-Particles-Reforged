@@ -11,7 +11,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.*;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.attribute.EnvironmentAttributes;
@@ -119,11 +118,11 @@ public abstract class MixinParticleEngine {
                     if (options == ParticleTypes.DRIPPING_WATER || options == ParticleTypes.DRIPPING_DRIPSTONE_WATER) {
                         alpha = FancyBlockParticles.CONFIG.rain.getTransparency(); // Small exception:)
 
-                        int color = this.level.environmentAttributes().getValue(EnvironmentAttributes.SKY_COLOR, Minecraft.getInstance().gameRenderer.mainCamera().position());
+                        var color = this.level.environmentAttributes().getValue(EnvironmentAttributes.SKY_COLOR, Minecraft.getInstance().gameRenderer.mainCamera().position());
 
-                        rCol = ARGB.redFloat(color);
-                        gCol = Mth.clamp(ARGB.greenFloat(color) + 0.1F, 0.1F, 1.0F);
-                        bCol = Mth.clamp(ARGB.blueFloat(color) + 0.5F, 0.5F, 1.0F);
+                        rCol = color.x();
+                        gCol = Mth.clamp(color.y() + 0.1F, 0.1F, 1.0F);
+                        bCol = Mth.clamp(color.z() + 0.5F, 0.5F, 1.0F);
                     }
 
                     if (options == ParticleTypes.DRIPPING_DRIPSTONE_WATER)

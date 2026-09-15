@@ -1,5 +1,6 @@
 package hantonik.fbp.screen;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import hantonik.fbp.FancyBlockParticles;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -12,7 +13,6 @@ import net.minecraft.client.input.KeyEvent;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
-import org.lwjgl.glfw.GLFW;
 
 import java.net.URI;
 
@@ -91,7 +91,7 @@ public class FBPOculusWarningScreen extends Screen {
 
     @Override
     public boolean keyPressed(KeyEvent event) {
-        if ((event.input() == GLFW.GLFW_KEY_ENTER || event.input() == GLFW.GLFW_KEY_SPACE) && event.modifiers() == 0 && this.shouldCloseOnEsc()) {
+        if ((event.input() == InputConstants.KEY_RETURN || event.input() == InputConstants.KEY_SPACE) && event.modifiers() == 0 && this.shouldCloseOnEsc()) {
             this.onClose();
 
             return true;

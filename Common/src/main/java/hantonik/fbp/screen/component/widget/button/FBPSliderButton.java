@@ -1,5 +1,6 @@
 package hantonik.fbp.screen.component.widget.button;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.AbstractSliderButton;
@@ -9,7 +10,6 @@ import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
-import org.lwjgl.glfw.GLFW;
 
 import java.text.DecimalFormat;
 import java.util.function.BooleanSupplier;
@@ -98,9 +98,9 @@ public class FBPSliderButton extends AbstractSliderButton {
 
     @Override
     public boolean keyPressed(KeyEvent event) {
-        var flag = event.input() == GLFW.GLFW_KEY_LEFT;
+        var flag = event.input() == InputConstants.KEY_LEFT;
 
-        if (flag || event.input() == GLFW.GLFW_KEY_RIGHT) {
+        if (flag || event.input() == InputConstants.KEY_RIGHT) {
             if (this.minValue > this.maxValue)
                 flag = !flag;
 

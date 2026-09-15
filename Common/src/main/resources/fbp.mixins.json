@@ -5,7 +5,7 @@
   "client": [
     "MixinBlockItem",
     "MixinClientLevel",
-    "MixinGlRenderPass",
+    "MixinFrontendGpuDevice",
     "MixinLevelRenderer",
     "MixinOptionsScreen",
     "MixinParticleEngine",

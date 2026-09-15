@@ -50,11 +50,8 @@ dependencies {
 
 	implementation "maven.modrinth:modmenu:$modmenu_version"
 
-	compileOnly "com.github.glitchfiend:SereneSeasons-fabric:$mc_version-$sereneseasons_version"
-	compileOnly "com.github.glitchfiend:GlitchCore-fabric:$mc_version-$glitchcore_version"
-
 	compileOnly "net.caffeinemc:sodium-fabric:$sodium_version+mc$mc_version"
-	compileOnly "maven.modrinth:iris:$iris_version+26.2-fabric"
+	compileOnly "maven.modrinth:iris:$iris_version+$mc_version-fabric"
 
 	// Iris libs
     localRuntime 'org.antlr:antlr4-runtime:4.13.1'

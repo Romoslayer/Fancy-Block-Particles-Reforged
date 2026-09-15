@@ -162,13 +162,13 @@ public class FBPPlacingAnimationParticle extends Particle implements IFBPAnimati
         var offset = this.state.getOffset(this.pos);
         stack.translate(offset.x, offset.y, offset.z);
 
-        stack.mulPose(Axis.YP.rotation(this.angleY));
+        stack.rotate(Axis.YP, this.angleY);
 
         this.slideIn(stack, progress);
         this.rotate(stack, progress);
         this.scale(stack, progress);
 
-        stack.mulPose(Axis.YP.rotation(-this.angleY));
+        stack.rotate(Axis.YP, -this.angleY);
 
         stack.translate(-offset.x, -offset.y, -offset.z);
         stack.translate(-0.5F, -0.5F, -0.5F);
@@ -200,9 +200,9 @@ public class FBPPlacingAnimationParticle extends Particle implements IFBPAnimati
 
         stack.translate(pivot.x, pivot.y, pivot.z);
 
-        stack.mulPose(Axis.XP.rotation(rotation.x));
-        stack.mulPose(Axis.YP.rotation(rotation.y));
-        stack.mulPose(Axis.ZP.rotation(rotation.z));
+        stack.rotate(Axis.XP, rotation.x);
+        stack.rotate(Axis.YP, rotation.y);
+        stack.rotate(Axis.ZP, rotation.z);
 
         stack.translate(-pivot.x, -pivot.y, -pivot.z);
     }

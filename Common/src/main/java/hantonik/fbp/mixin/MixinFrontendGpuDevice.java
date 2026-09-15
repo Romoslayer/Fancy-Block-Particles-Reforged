@@ -11,23 +11,23 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 // Missing sampler with Iris workaround
-@Mixin(targets = "com.mojang.blaze3d.opengl.GlRenderPass")
-public abstract class MixinGlRenderPass {
+@Mixin(targets = "com.mojang.renderpearl.frontend.FrontendGpuDevice")
+public abstract class MixinFrontendGpuDevice {
     @Final
     @Mutable
     @Shadow
-    public static boolean VALIDATION;
+    public static boolean STRICT_VALIDATION;
 
     @Inject(method = "<clinit>", at = @At("TAIL"))
     private static void init(CallbackInfo callback) {
         try {
             Services.class.getClassLoader().loadClass("net.irisshaders.iris.api.v0.IrisApi");
 
-            VALIDATION = false;
+            STRICT_VALIDATION = false;
         } catch (ClassNotFoundException e) {
-            VALIDATION = true;
+            STRICT_VALIDATION = true;
         }
 
-        LogManager.getLogger("GlRenderPass").info("Setting Blaze3d's GlRenderPass.VALIDATION to [{}]", VALIDATION);
+        LogManager.getLogger("FrontendGpuDevice").info("Setting RenderPearl's FrontendGpuDevice.STRICT_VALIDATION to [{}]", STRICT_VALIDATION);
     }
 }

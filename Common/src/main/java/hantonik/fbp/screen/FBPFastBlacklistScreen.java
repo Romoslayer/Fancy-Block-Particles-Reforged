@@ -19,7 +19,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
-import org.lwjgl.glfw.GLFW;
+import org.lwjgl.sdl.SDLMouse;
 
 public class FBPFastBlacklistScreen extends Screen {
     private static final WidgetSprites INDICATOR_SPRITES = new WidgetSprites(
@@ -157,7 +157,15 @@ public class FBPFastBlacklistScreen extends Screen {
         super.onClose();
     }
 
+    @Override
+    public void removed() {
+        // SDL cursor visibility is global and vanilla never re-shows it, so undo grabMouse() here
+        SDLMouse.SDL_ShowCursor();
+
+        super.removed();
+    }
+
     private void grabMouse() {
-        GLFW.glfwSetInputMode(Minecraft.getInstance().getWindow().handle(), GLFW.GLFW_CURSOR, GLFW.GLFW_CURSOR_HIDDEN);
+        SDLMouse.SDL_HideCursor();
     }
 }
