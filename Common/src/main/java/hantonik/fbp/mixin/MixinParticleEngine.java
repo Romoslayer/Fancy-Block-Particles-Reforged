@@ -43,8 +43,10 @@ public abstract class MixinParticleEngine {
         if (FancyBlockParticles.CONFIG.flame.isEnabled() && !(callback.getReturnValue() instanceof FBPFlameParticle)) {
             if (options instanceof SimpleParticleType type) {
                 if (callback.getReturnValue() instanceof FlameParticle) {
-                    if (options.getType() == ParticleTypes.FLAME || options.getType() == ParticleTypes.SOUL_FIRE_FLAME)
-                        callback.setReturnValue(new FBPFlameParticle.Provider(options.getType() == ParticleTypes.SOUL_FIRE_FLAME).createParticle(type, this.level, x, y, z, xd, yd, zd, this.random));
+                    var flameType = FBPFlameType.byParticle(options.getType());
+
+                    if (flameType != null)
+                        callback.setReturnValue(new FBPFlameParticle.Provider(flameType).createParticle(type, this.level, x, y, z, xd, yd, zd, this.random));
                     if (options.getType() == ParticleTypes.SMALL_FLAME)
                         callback.setReturnValue(new FBPFlameParticle.SmallFlameProvider().createParticle(type, this.level, x, y, z, xd, yd, zd, this.random));
                 }

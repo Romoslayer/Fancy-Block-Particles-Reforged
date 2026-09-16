@@ -3,8 +3,8 @@
 
   "promos": {
     "26.1.2-latest": "26.1.2.0.0-beta",
-    "26.2-latest": "26.2-1.0.0",
-    "26.3-latest": "26.3-1.0.0"
+    "26.2-latest": "26.2-1.0.1",
+    "26.3-latest": "26.3-1.0.1"
   },
 
   "26.1.2": {
@@ -12,10 +12,12 @@
   },
 
   "26.2": {
-    "26.2-1.0.0": "Port to Minecraft 26.2."
+    "26.2-1.0.0": "Port to Minecraft 26.2.",
+    "26.2-1.0.1": "Render copper torch flames as 3D green particles."
   },
 
   "26.3": {
-    "26.3-1.0.0": "Port to Minecraft 26.3 (Fabric)."
+    "26.3-1.0.0": "Port to Minecraft 26.3.",
+    "26.3-1.0.1": "Render copper torch flames as 3D green particles."
   }
 }
