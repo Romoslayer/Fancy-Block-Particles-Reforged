@@ -32,7 +32,7 @@ public class FBPFlameParticle extends FlameParticle implements IKillableParticle
     private final Vector3f[] rotatedNormal;
     private final Quaternionf rotation;
 
-    private final boolean isSoulFire;
+    private final FBPFlameType flameType;
 
     private final float multiplier;
 
@@ -45,22 +45,17 @@ public class FBPFlameParticle extends FlameParticle implements IKillableParticle
 
     private boolean killToggle;
 
-    public FBPFlameParticle(ClientLevel level, double x, double y, double z, double xd, double yd, double zd, boolean isSoulFire, boolean hasChild) {
+    public FBPFlameParticle(ClientLevel level, double x, double y, double z, double xd, double yd, double zd, FBPFlameType flameType, boolean hasChild) {
         super(level, x, y, z, xd, yd, zd, FBPConstants.FBP_PARTICLE_SPRITE.get());
 
         this.yd = -0.00085D;
         this.gravity = -0.05F;
 
-        this.isSoulFire = isSoulFire;
+        this.flameType = flameType;
 
-        this.rCol = 1.0F;
-        this.gCol = 1.0F;
-        this.bCol = 0.0F;
-
-        if (this.isSoulFire) {
-            this.rCol = 0.2F;
-            this.bCol = 0.9F;
-        }
+        this.rCol = flameType.getRed();
+        this.gCol = flameType.getGreen();
+        this.bCol = flameType.getBlue();
 
         this.alpha = 1.0F;
 
@@ -128,7 +123,7 @@ public class FBPFlameParticle extends FlameParticle implements IKillableParticle
                     else if (this.alpha <= 0.325D && this.hasChild && (state.getBlock() instanceof TorchBlock || state.getBlock() instanceof CandleBlock)) {
                         this.hasChild = false;
 
-                        Minecraft.getInstance().particleEngine.add(new FBPFlameParticle(this.level, this.startPos.x, this.startPos.y, this.startPos.z, 0, 0, 0, this.isSoulFire, false));
+                        Minecraft.getInstance().particleEngine.add(new FBPFlameParticle(this.level, this.startPos.x, this.startPos.y, this.startPos.z, 0, 0, 0, this.flameType, false));
                     }
                 }
 
@@ -227,10 +222,23 @@ public class FBPFlameParticle extends FlameParticle implements IKillableParticle
         var light = this.getLightCoords(partialTick);
 
         if (this.age >= this.lifetime) {
-            this.gCol = this.isSoulFire ? Math.min(1.0F, (scale / this.startSize) * 1.2F) : scale / this.startSize;
+            var factor = scale / this.startSize;
 
-            if (this.isSoulFire)
-                this.bCol = Math.min(1.0F, (scale / this.startSize) * 1.2F);
+            switch (this.flameType) {
+                case NORMAL -> this.gCol = factor;
+                case SOUL -> {
+                    this.gCol = Math.min(1.0F, factor * 1.2F);
+                    this.bCol = Math.min(1.0F, factor * 1.2F);
+                }
+                // Fading a single channel would turn copper's green to magenta, so dim every channel instead
+                case COPPER -> {
+                    var fade = Math.min(1.0F, factor * 1.2F);
+
+                    this.rCol = this.flameType.getRed() * fade;
+                    this.gCol = this.flameType.getGreen() * fade;
+                    this.bCol = this.flameType.getBlue() * fade;
+                }
+            }
         }
 
         this.putCube(renderState, (float) posX, (float) posY, (float) posZ, scale / 80.0F, this.rotatedNormal, this.rotation, u, v, light, this.rCol, this.gCol, this.bCol, alpha);
@@ -262,7 +270,7 @@ public class FBPFlameParticle extends FlameParticle implements IKillableParticle
     }
 
     @Nullable
-    private static FBPFlameParticle create(ClientLevel level, double x, double y, double z, double xd, double zd, float scale, boolean isSoulFire) {
+    private static FBPFlameParticle create(ClientLevel level, double x, double y, double z, double xd, double zd, float scale, FBPFlameType flameType) {
         if (FancyBlockParticles.CONFIG.global.isFreezeEffect() && !FancyBlockParticles.CONFIG.flame.isSpawnWhileFrozen())
             return null;
 
@@ -271,14 +279,14 @@ public class FBPFlameParticle extends FlameParticle implements IKillableParticle
         if (state.getBlock() instanceof TorchBlock || state.getBlock() instanceof CandleBlock)
             y += 0.04D;
 
-        return new FBPFlameParticle(level, x, y - 0.06D, z, xd, FBPConstants.RANDOM.nextDouble() * 0.025D, zd, isSoulFire, !(state.getBlock() instanceof TorchBlock) && !(state.getBlock() instanceof CandleBlock)).scale(scale);
+        return new FBPFlameParticle(level, x, y - 0.06D, z, xd, FBPConstants.RANDOM.nextDouble() * 0.025D, zd, flameType, !(state.getBlock() instanceof TorchBlock) && !(state.getBlock() instanceof CandleBlock)).scale(scale);
     }
 
-    public record Provider(boolean isSoulFire) implements ParticleProvider<SimpleParticleType> {
+    public record Provider(FBPFlameType flameType) implements ParticleProvider<SimpleParticleType> {
         @Nullable
         @Override
         public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xd, double yd, double zd, RandomSource random) {
-            return create(level, x, y, z, xd, zd, 1.0F, this.isSoulFire);
+            return create(level, x, y, z, xd, zd, 1.0F, this.flameType);
         }
     }
 
@@ -286,7 +294,7 @@ public class FBPFlameParticle extends FlameParticle implements IKillableParticle
         @Nullable
         @Override
         public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xd, double yd, double zd, RandomSource random) {
-            return create(level, x, y, z, xd, zd, 0.5F, false);
+            return create(level, x, y, z, xd, zd, 0.5F, FBPFlameType.NORMAL);
         }
     }
 }
