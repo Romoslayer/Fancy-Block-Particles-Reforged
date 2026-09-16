@@ -1,13 +1,13 @@
 <p align="center"><img src="Common/src/main/resources/logo.png" alt="Fancy Block Particles Reforged" width="256" /></p>
 
 # Fancy Block Particles Reforged
-This is **Romoslayer's** port of *Fancy Block Particles* to **Minecraft 26.3** (Fabric) and **26.2** (Fabric & NeoForge), built on top of Hantonik and TominoCZ's *FBP Renewed*, which itself is a revamp of MorphoxL's original *Fancy Block Particles* mod. See [Credits](#credits) below for the full lineage.
+This is **Romoslayer's** port of *Fancy Block Particles* to **Minecraft 26.3** and **26.2** (Fabric & NeoForge on both), built on top of Hantonik and TominoCZ's *FBP Renewed*, which itself is a revamp of MorphoxL's original *Fancy Block Particles* mod. See [Credits](#credits) below for the full lineage.
 
 ## Downloads
 
 [CurseForge](https://www.curseforge.com/minecraft/mc-mods/fancy-block-particles-reforged) · [Modrinth](https://modrinth.com/mod/fbp-reforged)
 
-Each Minecraft version lives on its own branch: [`26.3`](https://github.com/Romoslayer/Fancy-Block-Particles-Reforged/tree/26.3) (Fabric only, until NeoForge ships 26.3) and [`26.2`](https://github.com/Romoslayer/Fancy-Block-Particles-Reforged/tree/26.2) (Fabric & NeoForge).
+Each Minecraft version lives on its own branch: [`26.3`](https://github.com/Romoslayer/Fancy-Block-Particles-Reforged/tree/26.3) and [`26.2`](https://github.com/Romoslayer/Fancy-Block-Particles-Reforged/tree/26.2).
 
 Looking for the officially published, actively-maintained mod on older versions instead? Get it from Hantonik's pages:\
 [CurseForge](https://curseforge.com/minecraft/mc-mods/fbp-renewed "Then just click download ;)") · [Modrinth](https://modrinth.com/mod/fbp-renewed "Then just click download ;)")

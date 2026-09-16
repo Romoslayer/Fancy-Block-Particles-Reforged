@@ -15,7 +15,6 @@ plugins {
 include (
     "Common",
     "Fabric",
-    // NeoForge has no Minecraft 26.3 release yet; re-add once one ships
-    // "NeoForge",
+    "NeoForge",
     "Changelog"
 )
