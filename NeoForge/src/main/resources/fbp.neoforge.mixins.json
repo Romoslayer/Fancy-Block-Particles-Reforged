@@ -4,8 +4,6 @@
   "compatibilityLevel": "JAVA_25",
   "client": [
     "MixinModelBlockRenderer",
-    "embeddium.MixinBlockOcclusionCache",
-    "embeddium.MixinBlockRenderer",
     "MixinSectionCompiler",
     "sodium.MixinAbstractBlockRenderContext",
     "sodium.MixinBlockRenderer"
