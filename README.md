@@ -5,7 +5,7 @@ This is **Romoslayer's** port of *Fancy Block Particles* to **Minecraft 26.3** a
 
 ## Downloads
 
-[CurseForge](https://www.curseforge.com/minecraft/mc-mods/fancy-block-particles-reforged) · [Modrinth](https://modrinth.com/mod/fbp-reforged)
+[CurseForge](https://www.curseforge.com/minecraft/mc-mods/fancy-block-particles-reforged)
 
 Each Minecraft version lives on its own branch: [`26.3`](https://github.com/Romoslayer/Fancy-Block-Particles-Reforged/tree/26.3) and [`26.2`](https://github.com/Romoslayer/Fancy-Block-Particles-Reforged/tree/26.2).
 
