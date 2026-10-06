@@ -1,6 +1,8 @@
 package hantonik.fbp.mixin;
 
 import hantonik.fbp.FancyBlockParticles;
+import hantonik.fbp.particle.FBPRainParticle;
+import hantonik.fbp.particle.FBPSnowParticle;
 import hantonik.fbp.particle.FBPTerrainParticle;
 import hantonik.fbp.util.BlacklistMode;
 import hantonik.fbp.util.FBPConstants;
@@ -10,13 +12,17 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.dimension.DimensionType;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.storage.WritableLevelData;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
@@ -25,6 +31,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ClientLevel.class)
@@ -77,10 +84,9 @@ public abstract class MixinClientLevel extends Level {
         }
     }
 
-    @Inject(at = @At("HEAD"), method = "addBreakingBlockEffect", cancellable = true)
-    public void addBreakingBlockEffect(BlockPos pos, Direction side, CallbackInfo callback) {
-        var state = this.getBlockState(pos);
-
+    // 26.3 split addBreakingBlockEffect into addBreakingBlockEffects (sound + loader hit-effect hooks) and this particle-only method
+    @Inject(at = @At("HEAD"), method = "addBreakingParticles(Lnet/minecraft/core/BlockPos;Lnet/minecraft/core/Direction;Lnet/minecraft/world/level/block/state/BlockState;)V", cancellable = true)
+    public void addBreakingParticles(BlockPos pos, Direction side, BlockState state, CallbackInfo callback) {
         if (FancyBlockParticles.CONFIG.getBlockParticlesMode(state.getBlock()) != BlacklistMode.VANILLA)
             callback.cancel();
 
@@ -139,5 +145,69 @@ public abstract class MixinClientLevel extends Level {
                 this.minecraft.particleEngine.add(particle);
             }
         }
+    }
+
+    // Rain/snow ticking moved here from WeatherEffectRenderer.tickRainParticles in 26.2
+    @Inject(at = @At("HEAD"), method = "tickWeatherEffects()V")
+    private void tickWeatherEffects(CallbackInfo callback) {
+        if (FancyBlockParticles.CONFIG.global.isEnabled() && !FancyBlockParticles.CONFIG.global.isFreezeEffect()) {
+            if (FancyBlockParticles.CONFIG.rain.isEnabled() || FancyBlockParticles.CONFIG.snow.isEnabled()) {
+                var level = (ClientLevel) (Object) this;
+                var camera = this.minecraft.gameRenderer.mainCamera();
+
+                if (level.getRainLevel(1.0F) <= 0.0F)
+                    return;
+
+                var rainDensity = FancyBlockParticles.CONFIG.rain.getParticleDensity() * 4.0F * FancyBlockParticles.CONFIG.rain.getSimulationDistance() / 2;
+                var snowDensity = FancyBlockParticles.CONFIG.snow.getParticleDensity() * 4.0F * FancyBlockParticles.CONFIG.snow.getSimulationDistance() / 2;
+
+                var density = Math.max(rainDensity, snowDensity);
+
+                for (var i = 0; i < density; i++) {
+                    var angle = FBPConstants.RANDOM.nextDouble() * Math.PI * 2.0D;
+                    var radius = Mth.sqrt(FBPConstants.RANDOM.nextFloat()) * Math.max(FancyBlockParticles.CONFIG.rain.getSimulationDistance(), FancyBlockParticles.CONFIG.snow.getSimulationDistance()) / 2 * 16.0F;
+
+                    var x = camera.blockPosition().getX() + radius * Math.cos(angle);
+                    var y = camera.blockPosition().getY();
+                    var z = camera.blockPosition().getZ() + radius * Math.sin(angle);
+
+                    var pos = BlockPos.containing(x, y, z);
+                    var surfaceHeight = level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, pos).getY();
+
+                    var precipitation = level.getBiome(pos).value().getPrecipitationAt(pos, level.getSeaLevel());
+
+                    if (camera.position().distanceTo(new Vec3(x, y, z)) > (precipitation == Biome.Precipitation.RAIN ? FancyBlockParticles.CONFIG.rain.getSimulationDistance() : FancyBlockParticles.CONFIG.snow.getSimulationDistance()) * 16.0F)
+                        continue;
+
+                    y = (int) (y + 25.0D + FBPConstants.RANDOM.nextDouble() * 10.0D);
+
+                    if (y <= surfaceHeight + 2)
+                        y = surfaceHeight + 10;
+
+                    if (precipitation == Biome.Precipitation.RAIN) {
+                        if (FancyBlockParticles.CONFIG.rain.isEnabled())
+                            if (i < rainDensity)
+                                this.minecraft.particleEngine.add(new FBPRainParticle.Provider().createParticle(ParticleTypes.RAIN.getType(), level, x, y, z, 0.0D, 0.0D, 0.0D, level.getRandom()));
+                    } else if (precipitation == Biome.Precipitation.SNOW) {
+                        if (FancyBlockParticles.CONFIG.snow.isEnabled())
+                            if (i < snowDensity)
+                                this.minecraft.particleEngine.add(new FBPSnowParticle.Provider().createParticle(ParticleTypes.RAIN.getType(), level, x, y, z, 0.0D, 0.0D, 0.0D, level.getRandom()));
+                    }
+                }
+            }
+        }
+    }
+
+    @Redirect(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/ClientLevel;addParticle(Lnet/minecraft/core/particles/ParticleOptions;DDDDDD)V"), method = "tickWeatherEffects()V")
+    private void addWeatherParticle(ClientLevel instance, ParticleOptions particleOptions, double x, double y, double z, double xd, double yd, double zd) {
+        if (FancyBlockParticles.CONFIG.global.isEnabled()) {
+            if (particleOptions.getType() == ParticleTypes.SMOKE && FancyBlockParticles.CONFIG.smoke.isEnabled())
+                return;
+
+            if (particleOptions.getType() == ParticleTypes.RAIN && FancyBlockParticles.CONFIG.rain.isEnabled())
+                return;
+        }
+
+        instance.addParticle(particleOptions, x, y, z, xd, yd, zd);
     }
 }
