@@ -114,5 +114,5 @@ subprojects {
 }
 
 tasks.register('publishMod') {
-    dependsOn(':NeoForge:publishCurseForge').finalizedBy(':Fabric:publishCurseForge')
+    dependsOn(':NeoForge:publishCurseForge', ':Forge:publishCurseForge').finalizedBy(':Fabric:publishCurseForge')
 }

@@ -1,7 +1,7 @@
 <p align="center"><img src="Common/src/main/resources/logo.png" alt="Fancy Block Particles Reforged" width="256" /></p>
 
 # Fancy Block Particles Reforged
-This is **Romoslayer's** port of *Fancy Block Particles* to **Minecraft 26.3** and **26.2** (Fabric & NeoForge on both), built on top of Hantonik and TominoCZ's *FBP Renewed*, which itself is a revamp of MorphoxL's original *Fancy Block Particles* mod. See [Credits](#credits) below for the full lineage.
+This is **Romoslayer's** port of *Fancy Block Particles* to **Minecraft 26.3** and **26.2** (Fabric, NeoForge & Forge on both), built on top of Hantonik and TominoCZ's *FBP Renewed*, which itself is a revamp of MorphoxL's original *Fancy Block Particles* mod. See [Credits](#credits) below for the full lineage.
 
 ## Downloads
 

@@ -1,0 +1,31 @@
+modLoader="javafml"
+loaderVersion="[66,)"
+license="GPLv3"
+issueTrackerURL="https://github.com/Romoslayer/Fancy-Block-Particles-Reforged/issues"
+clientSideOnly=true
+
+[[mods]]
+    modId="fbp"
+    version="${mod_version}"
+    displayName="${mod_name}"
+    displayURL="https://www.curseforge.com/minecraft/mc-mods/fancy-block-particles-reforged"
+    displayTest="IGNORE_ALL_VERSION"
+    logoFile="logo.png"
+    updateJSONURL="https://raw.githubusercontent.com/Romoslayer/Fancy-Block-Particles-Reforged/${mc_version}/update.json"
+    authors="Hantonik, TominoCZ, Romoslayer"
+    credits="Original mod by MorphoxL, continued as FBP Renewed by Hantonik and TominoCZ"
+    description='''3D Digging particles! YAY!'''
+
+[[dependencies.fbp]]
+    modId="forge"
+    mandatory=true
+    versionRange="[66,)"
+    ordering="NONE"
+    side="CLIENT"
+
+[[dependencies.fbp]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[26.3,26.4)"
+    ordering="NONE"
+    side="CLIENT"
