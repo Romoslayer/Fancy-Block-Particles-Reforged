@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        loader: [ 'Fabric', 'NeoForge' ]
+        loader: [ 'Fabric', 'NeoForge', 'Forge' ]
 
     steps:
       - name: 'Checkout repository'

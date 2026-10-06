@@ -77,7 +77,8 @@ public abstract class MixinClientLevel extends Level {
         }
     }
 
-    @Inject(at = @At("HEAD"), method = "addBreakingBlockEffect", cancellable = true)
+    // Full descriptor: Forge adds an addBreakingBlockEffect(BlockPos, BlockHitResult) overload that delegates to this one
+    @Inject(at = @At("HEAD"), method = "addBreakingBlockEffect(Lnet/minecraft/core/BlockPos;Lnet/minecraft/core/Direction;)V", cancellable = true)
     public void addBreakingBlockEffect(BlockPos pos, Direction side, CallbackInfo callback) {
         var state = this.getBlockState(pos);
 

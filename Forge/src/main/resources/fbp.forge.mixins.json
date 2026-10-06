@@ -1,0 +1,10 @@
+{
+  "required": true,
+  "package": "hantonik.fbp.mixin",
+  "compatibilityLevel": "JAVA_25",
+  "client": [
+    "MixinModelBlockRenderer",
+    "MixinSectionCompiler"
+  ],
+  "minVersion": "0.8"
+}

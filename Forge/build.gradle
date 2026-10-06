@@ -1,0 +1,94 @@
+import net.darkhax.curseforgegradle.Constants as CFConstants
+import net.darkhax.curseforgegradle.TaskPublishCurseForge
+
+plugins {
+    id 'net.minecraftforge.gradle' version '[7.0.29,8)'
+}
+
+base {
+    archivesName = "$mod_name-forge"
+}
+
+println "Forge: $forge_version"
+
+minecraft {
+    accessTransformer = true
+
+    runs {
+        configureEach {
+            workingDir = rootProject.layout.projectDirectory.dir('run')
+
+            // Dev runs load classes from directories, so Mixin can't read the jar manifest
+            args "--mixin.config=${mod_id}.mixins.json", "--mixin.config=${mod_id}.forge.mixins.json"
+
+            systemProperty 'eventbus.api.strictRuntimeChecks', 'true'
+            systemProperty 'forge.logging.console.level', 'debug'
+        }
+
+        register('client')
+
+        register('server') {
+            args '--nogui'
+        }
+    }
+}
+
+repositories {
+    minecraft.mavenizer(it)
+    maven fg.forgeMaven
+    maven fg.minecraftLibsMaven
+}
+
+dependencies {
+    implementation minecraft.dependency("net.minecraftforge:forge:$mc_version-$forge_version")
+
+    compileOnly project(':Common')
+
+    compileOnly "io.github.llamalad7:mixinextras-common:$mixin_extras_version"
+
+    runtimeOnly "maven.modrinth:spark:$spark_version-forge"
+
+    compileOnly "org.projectlombok:lombok:$lombok_version"
+    annotationProcessor "org.projectlombok:lombok:$lombok_version"
+}
+
+processResources {
+    // Forge ships stock Mixin 0.8.7, which has no compatibility levels above JAVA_21
+    filesMatching('*.mixins.json') {
+        filter { it.replace('"JAVA_25"', '"JAVA_21"') }
+    }
+}
+
+jar {
+    manifest {
+        attributes['MixinConfigs'] = "${mod_id}.mixins.json,${mod_id}.forge.mixins.json"
+    }
+}
+
+sourcesJar {
+    from project(':Common').sourceSets.main.allSource
+}
+
+artifacts {
+    archives jar
+    archives sourcesJar
+}
+
+project.evaluationDependsOn(':Changelog')
+
+tasks.register('publishCurseForge', TaskPublishCurseForge) {
+    dependsOn(tasks.jar)
+    dependsOn(':Changelog:makeHtmlChangelog')
+
+    apiToken = System.getenv('CURSEFORGE_TOKEN')
+
+    var modFile = upload('1657663', tasks.jar.archiveFile)
+    modFile.displayName = "${base.archivesName.get()}-$version"
+    modFile.releaseType = "$mod_version_label"
+    modFile.addGameVersion(mc_version, 'client')
+    modFile.addModLoader('Forge')
+    modFile.addJavaVersion "Java $java_version"
+
+    modFile.changelogType = CFConstants.CHANGELOG_HTML
+    modFile.changelog = file("${project(':Changelog').projectDir}/changelog.html").getText().replace([ '${version}': "$mc_version-$version" ])
+}
