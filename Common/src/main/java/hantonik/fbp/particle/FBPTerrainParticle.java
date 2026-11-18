@@ -12,7 +12,6 @@ import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.client.particle.TerrainParticle;
-import net.minecraft.client.renderer.block.dispatch.BlockStateModelPart;
 import net.minecraft.client.renderer.texture.MissingTextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.BlockPos;
@@ -21,7 +20,6 @@ import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
-import net.minecraft.util.Util;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -31,7 +29,6 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3d;
 import org.joml.Vector3f;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class FBPTerrainParticle extends TerrainParticle implements IFBPLegacyParticleRenderer, IKillableParticle {
@@ -123,7 +120,7 @@ public class FBPTerrainParticle extends TerrainParticle implements IFBPLegacyPar
 
         if (sprite == null) {
             if (!this.destroyed) {
-                var quads = Util.make(new ArrayList<BlockStateModelPart>(), list -> Minecraft.getInstance().getModelManager().getBlockStateModelSet().get(state).collectParts(this.random, list)).getFirst().getQuads(side);
+                var quads = FBPRenderHelper.getFirstPartQuads(state, this.random, side);
 
                 if (!quads.isEmpty())
                     this.sprite = quads.getFirst().materialInfo().sprite();
