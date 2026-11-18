@@ -4,12 +4,22 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import hantonik.fbp.renderer.state.FBPTerrainParticleRenderState;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.SingleQuadParticle;
+import net.minecraft.client.renderer.block.dispatch.BlockStateModelPart;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.client.resources.model.geometry.BakedQuad;
+import net.minecraft.core.Direction;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Nullable;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class FBPRenderHelper {
@@ -82,6 +92,15 @@ public final class FBPRenderHelper {
             return Math.min(normalX * normalX * 0.6F + normalY * normalY * (3.0F + normalY) / 4.0F + normalZ * normalZ * 0.8F, 1.0F);
         else
             return 1.0F;
+    }
+
+    // Some modded block models (e.g. Traveler's Backpack) collect no parts at all, so this can be empty
+    public static List<BakedQuad> getFirstPartQuads(BlockState state, RandomSource random, @Nullable Direction side) {
+        var parts = new ArrayList<BlockStateModelPart>();
+
+        Minecraft.getInstance().getModelManager().getBlockStateModelSet().get(state).collectParts(random, parts);
+
+        return parts.isEmpty() ? List.of() : parts.getFirst().getQuads(side);
     }
 
     public static void addVertex(VertexConsumer buffer, Vector3f pos, float u, float v, int light, float red, float green, float blue, float alpha, Vector3f normal) {

@@ -12,7 +12,6 @@ import net.minecraft.client.particle.DripParticle;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.ParticleRenderType;
-import net.minecraft.client.renderer.block.dispatch.BlockStateModelPart;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleOptions;
@@ -23,7 +22,6 @@ import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
-import net.minecraft.util.Util;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CampfireBlock;
@@ -34,7 +32,6 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class FBPDripParticle extends DripParticle implements IFBPParticleRenderer, IKillableParticle {
@@ -80,7 +77,7 @@ public class FBPDripParticle extends DripParticle implements IFBPParticleRendere
         this.sound = sound;
         this.lightLevel = lightLevel;
 
-        var quads = Util.make(new ArrayList<BlockStateModelPart>(), list -> Minecraft.getInstance().getModelManager().getBlockStateModelSet().get(this.state).collectParts(this.random, list)).getFirst().getQuads(null);
+        var quads = FBPRenderHelper.getFirstPartQuads(this.state, this.random, null);
 
         if (quads.isEmpty())
             this.sprite = Minecraft.getInstance().getModelManager().getBlockStateModelSet().getParticleMaterial(this.state).sprite();

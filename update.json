@@ -3,8 +3,8 @@
 
   "promos": {
     "26.1.2-latest": "26.1.2.0.0-beta",
-    "26.2-latest": "26.2-1.0.3",
-    "26.3-latest": "26.3-1.0.2"
+    "26.2-latest": "26.2-1.0.4",
+    "26.3-latest": "26.3-1.0.4"
   },
 
   "26.1.2": {
@@ -15,12 +15,15 @@
     "26.2-1.0.0": "Port to Minecraft 26.2.",
     "26.2-1.0.1": "Render copper torch flames as 3D green particles.",
     "26.2-1.0.2": "Add Forge support.",
-    "26.2-1.0.3": "Fix 3D rain and snow, and placing-animation outline and face culling, which had silently stopped working."
+    "26.2-1.0.3": "Fix 3D rain and snow, and placing-animation outline and face culling, which had silently stopped working.",
+    "26.2-1.0.4": "Fix a crash when hitting or breaking blocks whose model has no parts, such as Traveler's Backpack."
   },
 
   "26.3": {
     "26.3-1.0.0": "Port to Minecraft 26.3.",
     "26.3-1.0.1": "Render copper torch flames as 3D green particles.",
-    "26.3-1.0.2": "Add Forge support."
+    "26.3-1.0.2": "Add Forge support.",
+    "26.3-1.0.3": "Fix 3D cracking particles, 3D rain and snow, and placing-animation outline and face culling, which had silently stopped working.",
+    "26.3-1.0.4": "Fix a crash when hitting or breaking blocks whose model has no parts, such as Traveler's Backpack."
   }
 }
