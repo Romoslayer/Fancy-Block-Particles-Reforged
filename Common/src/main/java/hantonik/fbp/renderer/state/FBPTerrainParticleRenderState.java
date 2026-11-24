@@ -59,7 +59,13 @@ public class FBPTerrainParticleRenderState implements ParticleGroupRenderState {
 
     private static RenderType getRenderType(SingleQuadParticle.Layer layer) {
         return RENDER_TYPES.computeIfAbsent(layer, key -> {
-            var setup = RenderSetup.builder(key.pipeline()).withTexture("Sampler0", key.textureAtlasLocation()).useLightmap().createRenderSetup();
+            var builder = RenderSetup.builder(key.pipeline()).withTexture("Sampler0", key.textureAtlasLocation()).useLightmap();
+
+            // Fabulous graphics draws translucent render types through the OIT pass, which needs the layer's OIT pipelines
+            if (key.oitPipelineSet() != null)
+                builder.setOitPipelines(key.oitPipelineSet());
+
+            var setup = builder.createRenderSetup();
 
             return MixinRenderType.fbp$create("fbp_terrain_particle_" + (key.translucent() ? "translucent" : "opaque") + "_" + key.textureAtlasLocation().getPath(), setup);
         });
